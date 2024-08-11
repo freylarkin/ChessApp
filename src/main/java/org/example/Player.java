@@ -53,7 +53,7 @@ public class Player {
     public void makeMove(ChessBoard board, Piece piece, int startX, int startY, int endX, int endY) {
         if (piece.isValidMove(startX, startY, endX, endY, board)) {
             piece.move(endX, endY, board);
-            board.updateBoard(piece, endX, endY);
+            board.updateBoard(piece, startX, startY, endX, endY);
             updatePieces(piece);
         }
     }

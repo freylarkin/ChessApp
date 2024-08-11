@@ -3,9 +3,9 @@ package org.example;// Piece class
 // 10 Aug 2024
 
 public abstract class Piece {
-	private String colour;
-	private int x;
-	private int y;
+	protected String colour;
+	protected int x;
+	protected int y;
 
 	// constructor
 	public Piece(String colour, int x, int y) {
@@ -47,8 +47,13 @@ public abstract class Piece {
 
 	// abstract methods
 	public abstract boolean isValidMove(int startX, int startY, int endX, int endY, ChessBoard board);
-
 	public abstract void move(int endX, int endY, ChessBoard board);
+
+	// other methods
+	protected boolean isOccupiedBySameColour(ChessBoard board, int x, int y) {
+		Piece piece = board.getPiece(x, y);
+		return piece != null && piece.getColour().equals(this.colour);
+	}
 
 	@Override
 	public String toString() {
@@ -57,6 +62,8 @@ public abstract class Piece {
 	            ", position=(" + x + ", " + y + ")" +
 	            '}';
 	}
+
+
 }
 
 
