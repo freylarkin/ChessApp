@@ -25,8 +25,9 @@ public class King extends Piece {
 
             if (pieceAtEnd != null && pieceAtEnd.getColour().equals(this.colour)) {
                 return false;
+            } else {
+                return true; // piece of a different colour can be captured
             }
-            return true;
         }
 
         return false;
@@ -34,11 +35,9 @@ public class King extends Piece {
 
     @Override
     public void move(int endX, int endY, ChessBoard board) {
+        // TODO: capture mechanic
         if (isValidMove(this.getX(), this.getY(), endX, endY, board)) {
-            board.placePiece(this, endX, endY); // place King at new position
-            board.placePiece(null, this.getX(), this.getY()); // remove King from old pos
-            this.setX(endX); // update King's X
-            this.setY(endY); // update King's Y
+            board.updateBoard(this, this.getX(), this.getY(), endX, endY);
         }
     }
 }
