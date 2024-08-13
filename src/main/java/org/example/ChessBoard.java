@@ -9,7 +9,15 @@ public class ChessBoard {
 	}
 
 	public void printBoard() {
+		System.out.print("  ");
+		// x-axis label
+		for (int i = 0; i < board[0].length; i++) {
+			System.out.print(i + " ");
+		}
+		System.out.println();
+
 		for (int i = 0; i < board.length; i++) {
+			System.out.print(i + " ");
 			for (int j = 0; j < board[i].length; j++) {
 				if (board[i][j] != null) {
 					System.out.print(board[i][j].getColour().charAt(0) + " ");
@@ -32,7 +40,7 @@ public class ChessBoard {
 
 	public void removePiece(int x, int y) { // for when one piece captures another
 		if (x >= 0 && x < 8 && y >= 0 && y < 8) {
-			board[x][y] = null;
+				board[x][y] = null;
 		}
 	}
 
@@ -59,27 +67,36 @@ public class ChessBoard {
 
 	// test code
 	public static void main(String[] args) {
-		// Create a new ChessBoard instance
+		// create chessboard
 		ChessBoard board = new ChessBoard();
 
-		// Create some sample pieces (assuming Piece subclasses exist and have a constructor)
-		Piece whiteKing = new King("White", 0, 4); // Assuming King has this constructor
-		Piece blackQueen = new Queen("Black", 7, 4); // Assuming Queen has this constructor
+		// create sample pieces
+		Piece whiteKing = new King("White", 0, 4);
+		Piece blackQueen = new Queen("Black", 7, 4);
+		Piece whiteRook = new Rook("White", 0, 5);
+		Piece blackBishop = new Bishop("Black", 6, 4);
 
-		// Place pieces on the board
+		// place pieces on the board
 		board.placePiece(whiteKing, 0, 4);
 		board.placePiece(blackQueen, 7, 4);
+		board.placePiece(whiteRook, 6, 4);
+		board.placePiece(blackBishop, 5, 4);
+
+		System.out.println(whiteRook.toString());
 
 		// Print board to verify pieces are placed correctly
 		System.out.println("Board after placing pieces:");
 		board.printBoard();
 
-		// Move the white king to a new position
+		// move the white king to a new position
 		board.updateBoard(whiteKing, 0, 4, 1, 4);
 		System.out.println("\nBoard after moving the white king:");
 		board.printBoard();
 
-		// Remove the black queen
+		// move white rook to new pos
+		System.out.println("WhiteRook can move to (4, 3): " + whiteRook.isValidMove(whiteRook.getX(), whiteRook.getY(), 4, 3, board));
+
+		// remove the black queen
 		board.removePiece(7, 4);
 		System.out.println("\nBoard after removing the black queen:");
 		board.printBoard();
@@ -89,13 +106,6 @@ public class ChessBoard {
 			board.placePiece(new King("White", 0, 0), 8, 8); // Should throw an exception
 		} catch (IllegalArgumentException e) {
 			System.out.println("\nCaught expected exception: " + e.getMessage());
-		}
-
-		// Try to remove a piece from out of bounds
-		try {
-			board.removePiece(8, 8); // Should not throw an exception but should be handled gracefully
-		} catch (IllegalArgumentException e) {
-			System.out.println("\nCaught unexpected exception: " + e.getMessage());
 		}
 	}
 }
