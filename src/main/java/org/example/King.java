@@ -21,13 +21,10 @@ public class King extends Piece {
                 (endX == startX + 1 && endY == startY + 1)) {                      // diagonal move
 
             // check if end pos is alr occupied by the same colour piece
-            Piece pieceAtEnd = board.getPiece(endX, endY);
-
-            if (pieceAtEnd != null && pieceAtEnd.getColour().equals(this.colour)) {
-                return false;
-            } else {
-                return true; // piece of a different colour can be captured
+            if (isOccupiedBySameColour(board, endX, endY)) {
+                return false; // piece of same colour alr in space
             }
+            return true; // valid move
         }
 
         return false;
