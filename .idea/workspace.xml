@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c7da4e55-0118-40bb-a485-17102e391e39" name="Changes" comment="minor fix to isValidMove() logic; now accurately assesses if there is a piece in Rook's path or not">
+    <list default="true" id="c7da4e55-0118-40bb-a485-17102e391e39" name="Changes" comment="updated printBoard() to include x- and y-axis headings; added testing for creation of Rook and Bishop objects, and tested Rook isValidMove()">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Pawn.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ChessBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/ChessBoard.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,7 +102,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1723410609452</updated>
-      <workItem from="1723410610514" duration="18172000" />
+      <workItem from="1723410610514" duration="22425000" />
     </task>
     <task id="LOCAL-00001" summary="Commented out getPiece() and setPiece() in ChessBoard.java (think I need to move them to Piece.java)">
       <option name="closed" value="true" />
@@ -144,7 +144,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723510103409</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="updated printBoard() to include x- and y-axis headings; added testing for creation of Rook and Bishop objects, and tested Rook isValidMove()">
+      <option name="closed" value="true" />
+      <created>1723510298840</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1723510298840</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -167,6 +175,8 @@
     <MESSAGE value="Refactored code for move() function" />
     <MESSAGE value="Remembered I already have a function for checking the colour of a piece XD" />
     <MESSAGE value="minor fix to isValidMove() logic; now accurately assesses if there is a piece in Rook's path or not" />
-    <option name="LAST_COMMIT_MESSAGE" value="minor fix to isValidMove() logic; now accurately assesses if there is a piece in Rook's path or not" />
+    <MESSAGE value="updated printBoard() to include x- and y-axis headings" />
+    <MESSAGE value="updated printBoard() to include x- and y-axis headings; added testing for creation of Rook and Bishop objects, and tested Rook isValidMove()" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated printBoard() to include x- and y-axis headings; added testing for creation of Rook and Bishop objects, and tested Rook isValidMove()" />
   </component>
 </project>
