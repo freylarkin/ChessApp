@@ -55,6 +55,17 @@ public abstract class Piece {
 		return piece != null && piece.getColour().equals(this.colour);
 	}
 
+	protected void capturePiece(ChessBoard board, int x, int y) {
+		Piece capturedPiece = board.getPiece(x, y);
+		if (capturedPiece != null && !isOccupiedBySameColour(board, x, y)) {
+			String playerColour = capturedPiece.getColour(); // remove piece from player's list
+
+			Player opponentPlayer = board.getPlayerByColour(playerColour); // find player from their colour piece
+			opponentPlayer.removePiece(capturedPiece); // remove piece from player's list
+			board.removePiece(x, y);// remove piece from board
+		}
+	}
+
 	@Override
 	public String toString() {
 	    return "Piece{" +
