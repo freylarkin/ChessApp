@@ -58,6 +58,10 @@ public class Pawn extends Piece {
     @Override
     public void move(int endX, int endY, ChessBoard board) {
         if (isValidMove(this.getX(), this.getY(), endX, endY, board)) {
+            if (board.getPiece(endX, endY) != null && !isOccupiedBySameColour(board, endX, endY)) {
+                this.capturePiece(board, endX, endY);
+            }
+
             hasMoved = true;
             board.updateBoard(this, this.getX(), this.getY(), endX, endY);
         } else {
