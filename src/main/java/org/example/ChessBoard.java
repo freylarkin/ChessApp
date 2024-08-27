@@ -2,6 +2,8 @@ package org.example;// ChessBoard class
 // Freya Larkin
 // 10 Aug 2024
 
+import java.util.Arrays;
+
 public class ChessBoard {
 	public Piece[][] board;
 	private Player whitePlayer;
@@ -9,8 +11,8 @@ public class ChessBoard {
 
 	public ChessBoard() {
 		board = new Piece[8][8]; // initialize new board
-		this.whitePlayer = whitePlayer;
-		this.blackPlayer = blackPlayer;
+		whitePlayer = new Player("Player One", true, "White");
+		blackPlayer = new Player("Player Two", false, "Black");
 	}
 
 	public void printBoard() {
@@ -25,7 +27,7 @@ public class ChessBoard {
 			System.out.print(i + " ");
 			for (int j = 0; j < board[i].length; j++) {
 				if (board[i][j] != null) {
-					System.out.print(board[i][j].getColour().charAt(0) + " ");
+					System.out.print(board[i][j].getClass().getSimpleName().charAt(0) + " ");
 				} else {
 					System.out.print(". ");
 				}
@@ -37,7 +39,7 @@ public class ChessBoard {
 
 	public Piece getPiece(int x, int y) {
 		if (x >= 0 && x < 8 && y >= 0 && y < 8) { 
-			return board[x][y];
+			return board[y][x];
 		} else {
 			return null;
 		}
@@ -45,20 +47,20 @@ public class ChessBoard {
 
 	public void removePiece(int x, int y) { // for when one piece captures another
 		if (x >= 0 && x < 8 && y >= 0 && y < 8) {
-				board[x][y] = null;
+				board[y][x] = null;
 		}
 	}
 
 	public void placePiece(Piece piece, int x, int y) {
 		if (x >= 0 && x < 8 && y >= 0 && y < 8) { // check if coords are within range of board
-			board[x][y] = piece;
+			board[y][x] = piece;
 			piece.setPosition(x, y);
 		} else {
 			throw new IllegalArgumentException("Coordinates out of bounds");
 		}
 	}
 
-	public void updateBoard(Piece piece, int startX, int startY, int endX, int endY, Player player) {
+	public void updateBoard(Piece piece, int startX, int startY, int endX, int endY) {
 		// check coords are within bounds of the board
 		if (startX >= 0 && startX < 8 && startY >= 0 && startY < 8) {
 			if (getPiece(startX, startY) != null) {
@@ -67,13 +69,14 @@ public class ChessBoard {
 		}
 
 		if (endX >= 0 && endX < 8 && endY >= 0 && endY < 8) {
-			board[endX][endY] = piece; // place piece at new position
+			board[endY][endX] = piece; // place piece at new position
 			piece.setPosition(endX, endY); // update piece's pos
+			Player player = getPlayerByColour(piece.getColour());
 			player.updatePieces(this); // update player pieces list
 		}
 	}
 
-	public void initializeBoard(ChessBoard board) {
+	public void initializeBoard() {
 		// black pieces set-up
 		Piece blackRookL = new Rook("Black", 0, 0);
 		Piece blackKnightL = new Knight("Black", 1, 0);
@@ -105,14 +108,14 @@ public class ChessBoard {
 		Piece whiteRookR = new Rook("White", 7, 7);
 
 		// white pawn set-up
-		Piece whitePawn1 = new Pawn("White", 0, 7);
-		Piece whitePawn2 = new Pawn("White", 1, 7);
-		Piece whitePawn3 = new Pawn("White", 2, 7);
-		Piece whitePawn4 = new Pawn("White", 3, 7);
-		Piece whitePawn5 = new Pawn("White", 4, 7);
-		Piece whitePawn6 = new Pawn("White", 5, 7);
-		Piece whitePawn7 = new Pawn("White", 6, 7);
-		Piece whitePawn8 = new Pawn("White", 7, 7);
+		Piece whitePawn1 = new Pawn("White", 0, 6);
+		Piece whitePawn2 = new Pawn("White", 1, 6);
+		Piece whitePawn3 = new Pawn("White", 2, 6);
+		Piece whitePawn4 = new Pawn("White", 3, 6);
+		Piece whitePawn5 = new Pawn("White", 4, 6);
+		Piece whitePawn6 = new Pawn("White", 5, 6);
+		Piece whitePawn7 = new Pawn("White", 6, 6);
+		Piece whitePawn8 = new Pawn("White", 7, 6);
 
 		// place black pieces on board
 		placePiece(blackRookL, blackRookL.getX(), blackRookL.getY());
@@ -151,7 +154,6 @@ public class ChessBoard {
 		placePiece(whitePawn6, whitePawn6.getX(), whitePawn6.getY());
 		placePiece(whitePawn7, whitePawn7.getX(), whitePawn7.getY());
 		placePiece(whitePawn8, whitePawn8.getX(), whitePawn8.getY());
-
 	}
 
 	public Player getPlayerByColour(String colour) {
@@ -164,51 +166,22 @@ public class ChessBoard {
 		}
 	}
 
-	// test code
-	public static void main(String[] args) {
-		// create chessboard
-		ChessBoard board = new ChessBoard();
-
-		// create sample pieces
-		Piece whiteKing = new King("White", 0, 4);
-		Piece blackQueen = new Queen("Black", 7, 4);
-		Piece whiteRook = new Rook("White", 0, 5);
-		Piece blackBishop = new Bishop("Black", 6, 4);
-		Piece whitePawn = new Pawn("White", 0, 5);
-		Piece blackPawn = new Pawn("Black", 6, 4);
-
-		// place pieces on the board
-		board.placePiece(whiteKing, 0, 4);
-		board.placePiece(blackQueen, 7, 4);
-		board.placePiece(whiteRook, 6, 4);
-		board.placePiece(blackBishop, 5, 4);
-		board.placePiece(whitePawn, 4, 4);
-		board.placePiece(blackPawn, 4, 1);
-
-		System.out.println(whiteRook.toString());
-
-		// Print board to verify pieces are placed correctly
-		System.out.println("Board after placing pieces:");
-		board.printBoard();
-
-		// move the white king to a new position
-		board.updateBoard(whiteKing, 0, 4, 1, 4);
-		System.out.println("\nBoard after moving the white king:");
-		board.printBoard();
-
-		// move white rook to new pos
-		System.out.println("WhiteRook can move to (4, 3): " + whiteRook.isValidMove(whiteRook.getX(), whiteRook.getY(), 4, 3, board));
-
-		// remove the black queen
-		board.removePiece(7, 4);
-		System.out.println("\nBoard after removing the black queen:");
-		board.printBoard();
-
-		// Try to place a piece out of bounds to see exception handling
-		try {
-			board.placePiece(new King("White", 0, 0), 8, 8); // Should throw an exception
-		} catch (IllegalArgumentException e) {
-			System.out.println("\nCaught expected exception: " + e.getMessage());
+	public String toString(ChessBoard board) {
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				Piece piece = board.getPiece(i, j);
+				if (piece != null) {
+					System.out.println(piece.getClass().getSimpleName() + " at (" + i + ", " + j + ")");
+				}
+			}
 		}
+		return null; // nothing to print
+	}
+
+	public static void main(String[] args) {
+		ChessBoard board = new ChessBoard();
+		board.initializeBoard();
+		board.printBoard();
+
 	}
 }
