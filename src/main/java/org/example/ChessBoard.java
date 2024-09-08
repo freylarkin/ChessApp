@@ -178,6 +178,90 @@ public class ChessBoard {
 		return null; // nothing to print
 	}
 
+	// if king can be attacked
+	public boolean isKingInCheck(Player player) {
+		Piece[][] board = this.board;
+		King king = null;
+
+		// search board for king
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				Piece piece = board[i][j];
+				if (piece instanceof King && piece.getColour().equalsIgnoreCase(player.getColour())) {
+						king = (King) piece;
+						break;
+					}
+				}
+			}
+		if (king == null) {
+			return false; // no king found
+		}
+
+		// get coords of king
+		int kingX = king.getX();
+		int kingY = king.getY();
+
+		// check if opposing pieces can attack king
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				Piece piece = board[i][j];
+				if (piece != null && !piece.getColour().equals(king.getColour())) { // check piece is opponent's
+					if (piece.isValidMove(i, j, kingX, kingY, this)) {
+						return true; // king is in check
+					}
+				}
+			}
+		}
+		return false; // king is not in check
+	}
+
+	// if king's capture is inevitable
+	public boolean isCheckmate(Player player) {
+		Piece[][] board = this.board;
+
+		if (!isKingInCheck(player)) {
+			return false; // can't be checkmate if king is not in check
+		}
+
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				Piece piece = board[i][j];
+
+				if (piece != null && piece.getColour().equalsIgnoreCase(player.getColour())) {
+					// check possible moves for current piece
+					for (int x = 0; x < 8; x++) {
+						for (int y = 0; y < 8; y++) {
+							if (piece.isValidMove(piece.getX(), piece.getY(), x, y, this)) {
+								// make temp move to check
+								Piece originalPiece = board[y][x];
+								placePiece(piece, x, y);
+								removePiece(piece.getX(), piece.getY());
+
+								// check if king is still in check
+								if (!isKingInCheck(player)) {
+									// revert move since king not in checkmate
+									placePiece(piece, x, y);
+									board[y][x] = originalPiece;
+									return false;
+								}
+
+								// revert the move (king potensh still in checkmate)
+								placePiece(piece, x, y);
+								board[y][x] = originalPiece;
+							}
+						}
+					}
+
+				}
+			}
+		}
+		return true; // king is in checkmate
+
+
+
+
+	}
+
 	public static void main(String[] args) {
 		ChessBoard board = new ChessBoard();
 		board.initializeBoard();
