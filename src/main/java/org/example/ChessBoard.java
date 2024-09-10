@@ -183,4 +183,87 @@ public class ChessBoard {
 		Piece[][] board = this.board;
 		King king = null;
 
-		// se
+		// search board for king
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				Piece piece = board[i][j];
+				if (piece instanceof King && piece.getColour().equalsIgnoreCase(player.getColour())) {
+						king = (King) piece;
+						break;
+					}
+				}
+			}
+		if (king == null) {
+			return false; // no king found
+		}
+
+		// get coords of king
+		int kingX = king.getX();
+		int kingY = king.getY();
+
+		// check if opposing pieces can attack king
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				Piece piece = board[i][j];
+				if (piece != null && !piece.getColour().equals(king.getColour())) { // check piece is opponent's
+					if (piece.isValidMove(i, j, kingX, kingY, this)) {
+						return true; // king is in check
+					}
+				}
+			}
+		}
+		return false; // king is not in check
+	}
+
+	// if king's capture is inevitable
+	public boolean isCheckmate(Player player) {
+		Piece[][] board = this.board;
+
+		if (!isKingInCheck(player)) {
+			return false; // can't be checkmate if king is not in check
+		}
+
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				Piece piece = board[i][j];
+
+				if (piece != null && piece.getColour().equalsIgnoreCase(player.getColour())) {
+					if (canPieceMoveToEscapeCheck(piece)) {
+						return false; // not checkmate
+					}
+				}
+			}
+		}
+		return true; // king is in checkmate
+	}
+
+	private boolean canPieceMoveToEscapeCheck(Piece piece) {
+		for (int x = 0; x < 8; x++) {
+			for (int y = 0; y < 8; y++) {
+				if (piece.isValidMove(piece.getX(), piece.getY(), x, y, this)) {
+					Piece originalPiece = board[y][x];
+					placePiece(piece, x, y);
+					removePiece(piece.getX(), piece.getY());
+
+					boolean stillInCheck = isKingInCheck(getPlayerByColour(piece.getColour()));
+
+					// Revert move
+					placePiece(piece, piece.getX(), piece.getY());
+					board[x][y] = originalPiece;
+
+					if (!stillInCheck) {
+						return true; // check can be escaped
+					}
+				}
+			}
+		}
+		return false; // no valid moves to escape check
+	}
+
+	public static void main(String[] args) {
+		ChessBoard board = new ChessBoard();
+		board.initializeBoard();
+		board.printBoard();
+
+	}
+}
